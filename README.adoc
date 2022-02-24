@@ -1,4 +1,5 @@
 = Routers
+https://www.devcon5.ch/en/blog/2017/09/15/vertx-modular-router-design/
 
 image:https://img.shields.io/badge/vert.x-4.2.5-purple.svg[link="https://vertx.io"]
 
