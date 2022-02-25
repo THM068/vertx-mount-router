@@ -1,7 +1,7 @@
 package com.router.app.routers.services.endpoints;
 
-import io.vertx.core.Vertx;
-import io.vertx.ext.web.Router;
+import io.vertx.reactivex.core.Vertx;
+import io.vertx.reactivex.ext.web.Router;
 import jakarta.inject.Singleton;
 
 @Singleton
