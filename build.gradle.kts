@@ -32,9 +32,19 @@ dependencies {
   implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
   implementation("io.vertx:vertx-web")
   implementation("io.vertx:vertx-rx-java2:4.2.5")
+  implementation("io.vertx:vertx-mysql-client")
+  implementation("org.hibernate.reactive:hibernate-reactive-core:1.1.1.Final")
 
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
+
+  implementation("org.apache.logging.log4j:log4j-api:2.14.1")
+  implementation("org.apache.logging.log4j:log4j-core:2.14.1")
+  implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1")
+  implementation("org.slf4j:slf4j-api:1.7.30")
+
+  // https://mvnrepository.com/artifact/dev.miku/r2dbc-mysql
+
 }
 
 java {
