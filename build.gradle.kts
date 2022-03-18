@@ -43,7 +43,17 @@ dependencies {
   implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1")
   implementation("org.slf4j:slf4j-api:1.7.30")
 
+  // https://mvnrepository.com/artifact/io.vertx/vertx-web-client
+  implementation("io.vertx:vertx-web-client:4.2.6")
+
   // https://mvnrepository.com/artifact/dev.miku/r2dbc-mysql
+  compileOnly("org.projectlombok:lombok:1.18.22")
+
+  // https://mvnrepository.com/artifact/dev.miku/r2dbc-mysql
+  implementation("io.vertx:vertx-sql-client-templates:4.2.5")
+
+  // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+  implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2")
 
 }
 

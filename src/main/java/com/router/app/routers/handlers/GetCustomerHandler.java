@@ -24,6 +24,7 @@ public class GetCustomerHandler implements Handler<RoutingContext> {
 
   @Override
   public void handle(RoutingContext context) {
+
     mysqlPool.preparedQuery("select * from country where country=? Limit 5")
       .rxExecute(Tuple.of("Angola"))
       .map(this::createListOfCountries)
