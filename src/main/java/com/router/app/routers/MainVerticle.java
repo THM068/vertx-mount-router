@@ -9,6 +9,9 @@ import io.vertx.reactivex.ext.web.Router;
 import io.vertx.reactivex.ext.web.RoutingContext;
 import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import io.vertx.reactivex.ext.web.handler.LoggerHandler;
+import io.vertx.reactivex.servicediscovery.ServiceDiscovery;
+import io.vertx.reactivex.servicediscovery.types.HttpEndpoint;
+import io.vertx.servicediscovery.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +34,18 @@ public class MainVerticle extends AbstractVerticle {
       (r1, r2) -> {});
 
     //bind the main router to the http server
-
+    ServiceDiscovery discovery = ServiceDiscovery.create(vertxInstance);
     return vertxInstance.createHttpServer().requestHandler(main)
       .rxListen(8888)
+      .flatMap(server -> {
+        Record record = HttpEndpoint.createRecord(
+          "customer", // the name of the service
+          "localhost", // the host
+          server.actualPort(), // the port
+          "/" // the root of the endpoint
+        );
+        return discovery.rxPublish(record);
+      })
       .doOnSuccess(r -> logger.info("Server started on port 8888"))
       .ignoreElement();
 

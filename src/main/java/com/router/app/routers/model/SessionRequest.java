@@ -26,8 +26,12 @@ public class SessionRequest {
   private String username;
   private String password;
 
-  public SessionRequest(String username, String password) {
+  private SessionRequest(String username, String password) {
     this.username = username;
     this.password = password;
+  }
+
+  public static SessionRequest create(String username, String password) {
+    return new SessionRequest(username, password);
   }
 }

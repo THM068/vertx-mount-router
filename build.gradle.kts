@@ -55,6 +55,13 @@ dependencies {
   // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
   implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2")
 
+  // https://mvnrepository.com/artifact/io.vertx/vertx-circuit-breaker
+  implementation("io.vertx:vertx-circuit-breaker:4.2.6")
+
+  implementation("io.vertx:vertx-service-discovery:4.2.6")
+
+
+
 }
 
 java {

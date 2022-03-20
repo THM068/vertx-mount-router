@@ -4,6 +4,7 @@ import com.router.app.routers.VertxSingletonHolder;
 import com.router.app.routers.model.SessionRequest;
 import io.reactivex.Single;
 import io.vertx.core.json.JsonObject;
+import io.vertx.reactivex.core.RxHelper;
 import io.vertx.reactivex.core.buffer.Buffer;
 import io.vertx.reactivex.ext.web.client.HttpResponse;
 import io.vertx.reactivex.ext.web.client.WebClient;
