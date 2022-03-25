@@ -23,9 +23,9 @@ public class SessionService {
   public Single<JsonObject> createSession(SessionRequest sessionRequest) {
       return sessionRepository.createSession(sessionRequest)
         .map(bufferHttpResponse ->  bufferHttpResponse.bodyAsJsonObject())
-        .subscribeOn(RxHelper.scheduler(getSingletonVertx()))
-        .timeout(5, TimeUnit.SECONDS)
-        .onErrorReturn(t ->  new JsonObject().put("message", "D'oh! Timeout"));
+        .subscribeOn(RxHelper.scheduler(getSingletonVertx()));
+//        .timeout(5, TimeUnit.SECONDS)
+//        .onErrorReturn(t ->  new JsonObject().put("message", "D'oh! Timeout"));
   }
 
 }

@@ -33,10 +33,17 @@ public class SessionsHandler implements Handler<RoutingContext> {
   @Override
   public void handle(RoutingContext routingContext) {
     JsonObject jsonObject = routingContext.getBodyAsJson();
-    sessionService.createSession(SessionRequest.create(jsonObject.getString("identifier"), jsonObject.getString("password")))
-      .retry(3)
-      .subscribe(result -> this.successResponse(result, routingContext),
-        throwable -> this.errorResponse(throwable, routingContext));
+    circuitBreaker.rxExecuteWithFallback( future ->
+      sessionService.createSession(SessionRequest.create(jsonObject.getString("identifier"), jsonObject.getString("password")))
+        .subscribe(future::complete, future::fail),
+        t -> new JsonObject().put("message", "D'oh! Fallback")
+    ).subscribe(
+      result -> this.successResponse(result, routingContext)
+    );
+//    sessionService.createSession(SessionRequest.create(jsonObject.getString("identifier"), jsonObject.getString("password")))
+//      .retry(3)
+//      .subscribe(result -> this.successResponse(result, routingContext),
+//        throwable -> this.errorResponse(throwable, routingContext));
   }
 
   private void errorResponse(Throwable throwable, RoutingContext context) {
