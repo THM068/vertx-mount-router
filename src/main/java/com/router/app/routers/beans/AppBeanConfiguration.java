@@ -1,10 +1,17 @@
 package com.router.app.routers.beans;
 
+import com.router.app.routers.VertxSingletonHolder;
+import com.router.app.routers.model.MysqlApplicationConfiguration;
 import io.micronaut.context.annotation.Factory;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
+import io.vertx.config.spi.ConfigStore;
+import io.vertx.core.json.JsonObject;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.reactivex.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.spi.ConnectionFactory;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import org.hibernate.reactive.stage.Stage;
 
@@ -42,6 +49,19 @@ public class AppBeanConfiguration {
   @Singleton
   Stage.SessionFactory sessionFactory(EntityManagerFactory emf) {
     return emf.unwrap(Stage.SessionFactory.class);
+  }
+
+  @Singleton
+  MysqlApplicationConfiguration mysqlApplicationConfiguration() {
+    ConfigStoreOptions configStoreOptions = new ConfigStoreOptions();
+    configStoreOptions.setType("file")
+      .setFormat("properties")
+      .setConfig(new JsonObject().put("path", "application.properties"));
+
+    ConfigRetrieverOptions configRetrieverOptions = new ConfigRetrieverOptions();
+    configRetrieverOptions.addStore(configStoreOptions);
+
+    return new MysqlApplicationConfiguration(VertxSingletonHolder.getSingletonVertx(), configRetrieverOptions);
   }
 
 }

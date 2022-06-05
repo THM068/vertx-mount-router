@@ -13,6 +13,7 @@ import jakarta.inject.Singleton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Singleton
 public class GetCustomerHandler implements Handler<RoutingContext> {
@@ -26,6 +27,7 @@ public class GetCustomerHandler implements Handler<RoutingContext> {
   public void handle(RoutingContext context) {
 
     mysqlPool.preparedQuery("select * from country where country=? Limit 5")
+      .mapping(new CountryRowMapper()::apply)
       .rxExecute(Tuple.of("Angola"))
       .map(this::createListOfCountries)
       .doOnSuccess( s -> System.out.println("Countries have been retrieved"))
@@ -48,9 +50,17 @@ public class GetCustomerHandler implements Handler<RoutingContext> {
       });
   }
 
-  private List<Country> createListOfCountries(RowSet<Row> rows) {
+  private List<Country> createListOfCountries(RowSet<Country> rows) {
     List<Country> countries = new ArrayList<>();
-    rows.forEach(row -> countries.add(Country.create(row.getString("country"), row.getLong("country_id"))));
+    rows.iterator().forEachRemaining(c -> countries.add(c));
     return countries;
+  }
+}
+
+class CountryRowMapper implements Function<Row, Country>  {
+
+  @Override
+  public Country apply(Row row) {
+    return Country.create(row.getString("country"), row.getLong("country_id"));
   }
 }

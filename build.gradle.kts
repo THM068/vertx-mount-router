@@ -59,8 +59,10 @@ dependencies {
   implementation("io.vertx:vertx-circuit-breaker:4.2.6")
 
   implementation("io.vertx:vertx-service-discovery:4.2.6")
+  implementation("io.vertx:vertx-config:4.3.0")
 
-
+  // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
+  testImplementation("org.mockito:mockito-junit-jupiter:4.4.0")
 
 }
 

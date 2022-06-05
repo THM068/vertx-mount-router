@@ -34,6 +34,7 @@ public class CustomerController implements ServiceEndpoint {
     router.get("/two").handler(ctx -> ctx.response().end( x.toString()));
     router.get("/id/:id").handler(this.getCustomerByIdHandler);
     router.post("/sessions").handler(BodyHandler.create()).handler(this.sessionsHandler);
+
     return router;
   }
 

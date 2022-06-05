@@ -1,4 +1,5 @@
 package com.router.app.routers;
+import com.router.app.routers.model.MysqlApplicationConfiguration;
 import com.router.app.routers.services.endpoints.ServiceEndpoint;
 import io.micronaut.context.BeanContext;
 import io.reactivex.Completable;
@@ -9,6 +10,7 @@ import io.vertx.reactivex.ext.web.Router;
 import io.vertx.reactivex.ext.web.RoutingContext;
 import io.vertx.reactivex.ext.web.handler.BodyHandler;
 import io.vertx.reactivex.ext.web.handler.LoggerHandler;
+import io.vertx.reactivex.ext.web.handler.StaticHandler;
 import io.vertx.reactivex.servicediscovery.ServiceDiscovery;
 import io.vertx.reactivex.servicediscovery.types.HttpEndpoint;
 import io.vertx.servicediscovery.Record;
@@ -24,18 +26,26 @@ public class MainVerticle extends AbstractVerticle {
   @Override
   public Completable rxStart() {
     BeanContext beanContext = BeanContext.run();
+    MysqlApplicationConfiguration mysqlApplicationConfiguration = beanContext.getBean(MysqlApplicationConfiguration.class);
+
+    mysqlApplicationConfiguration.retrieveApplicationConfiguration()
+      .subscribe(result -> System.out.println(result.getPassword()));
     io.vertx.reactivex.core.Vertx vertxInstance = getSingletonVertx();
-    Router main = beanContext.streamOfType(ServiceEndpoint.class)
+    Router mainRouter = beanContext.streamOfType(ServiceEndpoint.class)
     .collect(() -> Router.router(vertxInstance), //the main router
       (r, s) -> {
-             r.route().handler(BodyHandler.create()).handler(LoggerHandler.create())
-                 .failureHandler(this::handleFailure);
-             r.mountSubRouter(s.mountPoint(), s.router(vertxInstance)); },
+
+              r.route().handler(BodyHandler.create())
+              .handler(StaticHandler.create())
+              .handler(LoggerHandler.create())
+              .failureHandler(this::handleFailure);
+
+               r.mountSubRouter(s.mountPoint(), s.router(vertxInstance)); },
       (r1, r2) -> {});
 
-    //bind the main router to the http server
     ServiceDiscovery discovery = ServiceDiscovery.create(vertxInstance);
-    return vertxInstance.createHttpServer().requestHandler(main)
+    //bind the main router to the http server
+    return vertxInstance.createHttpServer().requestHandler(mainRouter)
       .rxListen(8888)
       .flatMap(server -> {
         Record record = HttpEndpoint.createRecord(

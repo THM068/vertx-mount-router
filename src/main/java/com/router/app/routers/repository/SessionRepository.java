@@ -19,7 +19,7 @@ public class SessionRepository {
     return client.postAbs("https://f02agg.oogway.bskyb.com/sessions")
       .putHeader("Accept", "application/vnd.bridge.v1+json")
       .putHeader("Content-Type", "application/vnd.bridge.v1+json")
-      .putHeader("Authorization", "Basic ")
+      .putHeader("Authorization", "Basic cmFuZ29f YnJpZGdl OnJhbmdv")
       .putHeader("X-SkyOTT-Proposition", "SKY")
       .putHeader("X-SkyOTT-Territory", "GB")
       .putHeader("X-SkyOTT-Provider", "SKY")
