@@ -7,15 +7,12 @@ import jakarta.inject.Singleton;
 
 @Singleton
 public class PersonController implements ServiceEndpoint {
-  @Override
-  public String mountPoint() {
-    return "/api/person";
-  }
+
 
   @Override
   public Router router(Vertx vertx) {
     Router router = Router.router(vertx);
-    router.get("/one").handler(this::getOne);
+    router.get("/person/one").handler(this::getOne);
     return router;
   }
 

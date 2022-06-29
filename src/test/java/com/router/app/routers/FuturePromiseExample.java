@@ -76,4 +76,16 @@ public class FuturePromiseExample {
       });
     });
   }
+
+  @Test
+  public void allCompositionWithAFailure(Vertx vertx, VertxTestContext testContext) {
+    Future<BigDecimal> f1 = Future.succeededFuture(new BigDecimal(23));
+    Future f2 = Future.failedFuture(new RuntimeException());
+
+    testContext.verify(() ->{
+      Future<CompositeFuture> compositeFuture = CompositeFuture.all(f1, f2);
+      compositeFuture.onSuccess( r-> testContext.failNow("Test should fail"))
+        .onFailure(t -> testContext.completeNow());
+    });
+  }
 }

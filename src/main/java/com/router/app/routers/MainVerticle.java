@@ -40,7 +40,9 @@ public class MainVerticle extends AbstractVerticle {
               .handler(LoggerHandler.create())
               .failureHandler(this::handleFailure);
 
-               r.mountSubRouter(s.mountPoint(), s.router(vertxInstance)); },
+              r.route("/api/*")
+                  .subRouter(s.router(vertxInstance));
+                 },
       (r1, r2) -> {});
 
     ServiceDiscovery discovery = ServiceDiscovery.create(vertxInstance);

@@ -15,7 +15,7 @@ repositories {
   mavenCentral()
 }
 
-val vertxVersion = "4.2.5"
+val vertxVersion = "4.3.1"
 val junitJupiterVersion = "5.7.0"
 
 val mainVerticleName = "com.router.app.routers.MainVerticle"

@@ -21,19 +21,15 @@ public class CustomerController implements ServiceEndpoint {
     this.sessionsHandler = sessionsHandler;
   }
 
-  @Override
-  public String mountPoint() {
-    return "/api/customer";
-  }
 
   @Override
   public Router router(Vertx vertx) {
     String x = null;
     Router router = Router.router(vertx);
-    router.get("/one").handler(this.getCustomerHandler);
-    router.get("/two").handler(ctx -> ctx.response().end( x.toString()));
-    router.get("/id/:id").handler(this.getCustomerByIdHandler);
-    router.post("/sessions").handler(BodyHandler.create()).handler(this.sessionsHandler);
+    router.get("/customer/one").handler(this.getCustomerHandler);
+    router.get("/customer/two").handler(ctx -> ctx.response().end( x.toString()));
+    router.get("/customer/id/:id").handler(this.getCustomerByIdHandler);
+    router.post("/customer/sessions").handler(BodyHandler.create()).handler(this.sessionsHandler);
 
     return router;
   }
