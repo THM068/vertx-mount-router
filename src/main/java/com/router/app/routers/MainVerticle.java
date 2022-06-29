@@ -35,13 +35,12 @@ public class MainVerticle extends AbstractVerticle {
     .collect(() -> Router.router(vertxInstance), //the main router
       (r, s) -> {
 
-              r.route().handler(BodyHandler.create())
-              .handler(StaticHandler.create())
-              .handler(LoggerHandler.create())
-              .failureHandler(this::handleFailure);
-
-              r.route("/api/*")
-                  .subRouter(s.router(vertxInstance));
+              r.route()
+               .handler(LoggerHandler.create())
+               .handler(BodyHandler.create())
+               .handler(StaticHandler.create())
+               .failureHandler(this::handleFailure);
+              r.route("/api/*").subRouter(s.router(vertxInstance));
                  },
       (r1, r2) -> {});
 
